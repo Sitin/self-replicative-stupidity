@@ -13,7 +13,6 @@ git clone https://github.com/hlibvel/self-replicative-stupidity.git
 cd self-replicative-stupidity
 ```
 
-
 Create a virtual environment:
 
 ```bash
@@ -31,6 +30,14 @@ Install requirements:
 ```bash
 pip install -r requirements.txt
 ```
+
+Create the `.env` file from template:
+
+```bash
+cp env.template .env
+```
+
+And fill it with required information.
 
 Running The Application
 -----------------------
