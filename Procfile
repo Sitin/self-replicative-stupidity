@@ -1,1 +1,1 @@
-web: SERVER_PORT=80 python app.py
+web: gunicorn app:app
