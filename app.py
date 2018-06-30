@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, render_template, send_from_directory, url_for
 from werkzeug.contrib.fixers import ProxyFix
 from flask_dance.contrib.github import make_github_blueprint, github
 
@@ -27,22 +27,49 @@ def get_login():
     return resp.json()['login']
 
 
-def make_a_fork(owner, repo):
-    resp = github.post(f'/repos/{owner}/{repo}/forks')
+def has_repo(repo_name):
+    resp = github.get('/repositories')
+    assert resp.ok
+
+    for repo in resp.json():
+        if repo['name'] == repo_name:
+            return True
+
+    return False
+
+
+def make_a_fork(owner, repo_name):
+    resp = github.post(f'/repos/{owner}/{repo_name}/forks')
     assert resp.ok
 
     return resp.json()
 
 
-@app.route("/")
-def index():
+@app.route('/', methods=['GET'])
+def hello():
+    return render_template('index.html', REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
+
+
+@app.route('/<path:path>', methods=['GET'])
+def serve_file_in_dir(path):
+
+    if not os.path.isfile(os.path.join(STATIC_PATH, path)):
+        path = os.path.join(path, 'index.html')
+
+    return send_from_directory(STATIC_PATH, path)
+
+
+@app.route('/fork', methods=['GET'])
+def fork():
     if not github.authorized:
         return redirect(url_for('github.login'))
 
-    make_a_fork(REPO_OWNER, REPO_NAME)
+    if not has_repo(REPO_NAME):
+        make_a_fork(REPO_OWNER, REPO_NAME)
 
-    login = get_login()
-    return f'Made a fork of the {REPO_OWNER}/{REPO_NAME} for @{login}.'
+        return render_template('fork.html', login=get_login(), REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
+    else:
+        return render_template('exists.html', login=get_login(), REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
 
 
 def main():

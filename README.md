@@ -1,7 +1,7 @@
 self-replicative-stupidity
 ==========================
 
-The GitHub repository which replicates itself
+The GitHub repository which replicates itself.
 
 Installation
 ------------
@@ -80,3 +80,9 @@ If you are deploying to the fresh Heroku application enable the web worker:
 ```bash
 heroku ps:scale web=1 -a self-replicative-stupidity
 ```
+
+Implementation Notes
+--------------------
+
+The [Flask-Dance](https://github.com/singingwolfboy/flask-dance) is used for GitHub authentication. Other pieces are
+fairly straightforward.  

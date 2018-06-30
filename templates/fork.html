@@ -1,0 +1,9 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <p>Made a fork of the <a href="https://github.com/{{ REPO_OWNER }}/{{ REPO_NAME }}">{{ REPO_OWNER }}/{{ REPO_NAME }}</a> for you, @{{ login }}.</p>
+    </div>
+</div>
+{% endblock %}
