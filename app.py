@@ -35,11 +35,19 @@ def make_a_fork(owner, repo_name):
     return resp.json()
 
 
-@app.route('/', methods=['GET'])
-def index():
-    if not github.authorized:
-        return redirect(url_for('github.login'))
+def authorize(fn):
+    def wrapper(*args, **kwargs):
+        if not github.authorized:
+            return redirect(url_for('github.login'))
 
+        return fn(*args, **kwargs)
+
+    return wrapper
+
+
+@app.route('/', methods=['GET'])
+@authorize
+def index():
     return render_template('index.html', REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
 
 
@@ -53,10 +61,8 @@ def serve_file_in_dir(path):
 
 
 @app.route('/fork', methods=['GET'])
+@authorize
 def fork():
-    if not github.authorized:
-        return redirect(url_for('github.login'))
-
     make_a_fork(REPO_OWNER, REPO_NAME)
 
     return render_template('fork.html', login=get_login(), REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)

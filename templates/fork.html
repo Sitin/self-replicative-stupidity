@@ -1,9 +1,16 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-<div class="row">
+<div class="row" xmlns="http://www.w3.org/1999/html">
     <div class="col-md-12">
-        <p>Made a fork of the <a href="https://github.com/{{ REPO_OWNER }}/{{ REPO_NAME }}">{{ REPO_OWNER }}/{{ REPO_NAME }}</a> for you, @{{ login }}.</p>
+        <p>
+            Dear @{{ login }},<br/>
+
+            now you have a fork of the <a href="https://github.com/{{ REPO_OWNER }}/{{ REPO_NAME }}">{{ REPO_OWNER }}/{{ REPO_NAME }}</a>,
+            probably the most useless piece of code you've ever seen.<br/>
+
+            Sincerely yours,<br/>
+            <a href="https://github.com/{{ REPO_OWNER }}">{{ REPO_OWNER }}
     </div>
 </div>
 {% endblock %}
