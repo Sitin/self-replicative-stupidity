@@ -42,6 +42,8 @@ def authorize(fn):
 
         return fn(*args, **kwargs)
 
+    wrapper.__name__ = fn.__name__
+
     return wrapper
 
 
