@@ -4,13 +4,16 @@
 <div class="row" xmlns="http://www.w3.org/1999/html">
     <div class="col-md-12">
         <p>
-            Dear @{{ login }},<br/>
-
+            Dear @{{ login }},
+        </p>
+        <p>
             now you have a fork of the <a href="https://github.com/{{ REPO_OWNER }}/{{ REPO_NAME }}">{{ REPO_OWNER }}/{{ REPO_NAME }}</a>,
-            probably the most useless piece of code you've ever seen.<br/>
-
+            probably the most useless piece of code you've ever seen.
+        </p>
+        <p>
             Sincerely yours,<br/>
-            <a href="https://github.com/{{ REPO_OWNER }}">{{ REPO_OWNER }}
+            <a href="https://github.com/{{ REPO_OWNER }}">{{ REPO_OWNER }}</a>
+        </p>
     </div>
 </div>
 {% endblock %}
