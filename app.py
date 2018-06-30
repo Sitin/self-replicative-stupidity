@@ -15,6 +15,7 @@ blueprint = make_github_blueprint(
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
     scope='public_repo',
+    redirect_to='/fork',
 )
 
 app.register_blueprint(blueprint, url_prefix='/login')
@@ -27,17 +28,6 @@ def get_login():
     return resp.json()['login']
 
 
-def has_repo(repo_name):
-    resp = github.get('/repositories')
-    assert resp.ok
-
-    for repo in resp.json():
-        if repo['name'] == repo_name:
-            return True
-
-    return False
-
-
 def make_a_fork(owner, repo_name):
     resp = github.post(f'/repos/{owner}/{repo_name}/forks')
     assert resp.ok
@@ -46,7 +36,10 @@ def make_a_fork(owner, repo_name):
 
 
 @app.route('/', methods=['GET'])
-def hello():
+def index():
+    if not github.authorized:
+        return redirect(url_for('github.login'))
+
     return render_template('index.html', REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
 
 
@@ -64,12 +57,9 @@ def fork():
     if not github.authorized:
         return redirect(url_for('github.login'))
 
-    if not has_repo(REPO_NAME):
-        make_a_fork(REPO_OWNER, REPO_NAME)
+    make_a_fork(REPO_OWNER, REPO_NAME)
 
-        return render_template('fork.html', login=get_login(), REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
-    else:
-        return render_template('exists.html', login=get_login(), REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
+    return render_template('fork.html', login=get_login(), REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
 
 
 def main():
