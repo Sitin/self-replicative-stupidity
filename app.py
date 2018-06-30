@@ -28,7 +28,7 @@ def get_login():
 
 
 def make_a_fork(owner, repo):
-    resp = github.get(f'/repos/{owner}/{repo}/forks')
+    resp = github.post(f'/repos/{owner}/{repo}/forks')
     assert resp.ok
 
     return resp.json()
