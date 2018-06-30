@@ -15,7 +15,7 @@ blueprint = make_github_blueprint(
     client_id=CLIENT_ID,
     client_secret=CLIENT_SECRET,
     scope='public_repo',
-    redirect_to='/fork',
+    redirect_to='fork',
 )
 
 app.register_blueprint(blueprint, url_prefix='/login')
@@ -68,6 +68,11 @@ def fork():
     make_a_fork(REPO_OWNER, REPO_NAME)
 
     return render_template('fork.html', login=get_login(), REPO_OWNER=REPO_OWNER, REPO_NAME=REPO_NAME)
+
+
+@app.route('/health_check')
+def health_check():
+    return 'OK'
 
 
 def main():
