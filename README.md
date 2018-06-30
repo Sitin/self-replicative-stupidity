@@ -39,6 +39,12 @@ cp env.template .env
 
 And fill it with required information.
 
+To generate a `APP_SECRET` we suggest to use: 
+
+```bash
+python -c 'import os; import base64; print(base64.standard_b64encode(os.urandom(16)).decode())'
+```
+
 Running The Application
 -----------------------
 
